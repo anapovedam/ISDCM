@@ -1,7 +1,7 @@
 <%-- 
     Document   : login
     Created on : 23 feb 2025, 22:07:40
-    Author     : alumne
+    Author     : Ana Poveda
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

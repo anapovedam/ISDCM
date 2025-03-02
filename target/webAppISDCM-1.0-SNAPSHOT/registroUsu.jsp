@@ -24,8 +24,8 @@
         <% } %>
 
             <form action="servletUsuarios" method="post">
-                <input type="text" name="nombre" placeholder="Nombre" required>
-                <input type="text" name="apellidos" placeholder="Apellidos" required>
+                <input type="text" name="name" placeholder="Nombre" required>
+                <input type="text" name="surname" placeholder="Apellidos" required>
                 <input type="email" name="email" placeholder="Correo electrónico" required>
                 <input type="text" name="username" placeholder="Nombre usuario" required>
                 <input type="password" name="password" placeholder="Contraseña" required>

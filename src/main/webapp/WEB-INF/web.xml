@@ -8,4 +8,14 @@
             30
         </session-timeout>
     </session-config>
+    <welcome-file-list>
+        <welcome-file>login.jsp</welcome-file>
+    </welcome-file-list>
+    <display-name> Welcome to GlassFish Server</display-name>
+    <description> Welcome to GlassFish Server</description>
+    
+    <error-page>
+        <error-code>404</error-code>
+        <location>/404.html</location>
+    </error-page>
 </web-app>

@@ -16,6 +16,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  *
@@ -26,6 +28,7 @@ public class servletUsuarios extends HttpServlet {
     private static final String JDBC_URL = "jdbc:derby://localhost:1527/pr2";
     private static final String JDBC_USER = "pr2";
     private static final String JDBC_PASSWORD = "pr2";
+    private static final String TABLENAME = "users";
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -68,15 +71,10 @@ public class servletUsuarios extends HttpServlet {
             request.getRequestDispatcher("registroUsu.jsp").forward(request, response);
             return;
         }
-
-        //String query;
-        //PreparedStatement statement;
-        //Class.forName("org.apache.derby-jdbc.CLientCriver");
-        
         
         try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD)) {
             // Verificar si el usuario ya existe
-            String checkUserSQL = "SELECT * FROM USUARIOS WHERE USERNAME = ?";
+            String checkUserSQL = "SELECT * FROM " + TABLENAME + " WHERE USERNAME = ?";
             try (PreparedStatement checkStmt = conn.prepareStatement(checkUserSQL)) {
                 checkStmt.setString(1, username);
                 ResultSet rs = checkStmt.executeQuery();
@@ -86,9 +84,8 @@ public class servletUsuarios extends HttpServlet {
                     return;
                 }
             }
-
             // Insertar el nuevo usuario
-            String insertSQL = "INSERT INTO USUARIOS (NOMBRE, APELLIDOS, EMAIL, USERNAME, PASSWORD) VALUES (?, ?, ?, ?, ?)";
+            String insertSQL = "INSERT INTO " + TABLENAME + " (user_name, surname, email, username, password) VALUES (?, ?, ?, ?, ?)";
             try (PreparedStatement stmt = conn.prepareStatement(insertSQL)) {
                 stmt.setString(1, nombre);
                 stmt.setString(2, apellidos);
@@ -96,6 +93,9 @@ public class servletUsuarios extends HttpServlet {
                 stmt.setString(4, username);
                 stmt.setString(5, password);
                 stmt.executeUpdate();
+                conn.close();
+            } catch (SQLException err) {
+                System.out.println(err.getMessage());
             }
 
             request.setAttribute("mensaje", "Registro exitoso. Ahora puedes iniciar sesión.");

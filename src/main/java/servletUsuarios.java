@@ -122,8 +122,7 @@ public class servletUsuarios extends HttpServlet {
                         //request.getRequestDispatcher("registroUsu.jsp").forward(request, response);
                         HttpSession session = request.getSession();
                         session.setAttribute("username", username);
-                        //response.sendRedirect("home.jsp");
-                        response.sendRedirect("index.html");
+                        response.sendRedirect("login.jsp");
                         return;
                     } else {
                         request.setAttribute("mensaje", "Error: Credenciales incorrectas.");

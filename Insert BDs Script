@@ -1,0 +1,29 @@
+INSERT INTO users (user_name, surname, email, username, password) 
+VALUES 
+('Ana', 'Poveda', 'anapoveda0609@gmail.com', 'anapoveda', '1234');
+
+INSERT INTO users (user_name, surname, email, username, password) 
+VALUES 
+('Javier', 'Abella', 'javiabellanieto2001@gmail.com', 'jabella', '1234');
+
+INSERT INTO users (user_name, surname, email, username, password) 
+VALUES 
+('Carlos', 'Ruiz', 'carlos.ruiz@example.com', 'carlitox', '1234');
+
+INSERT INTO users (user_name, surname, email, username, password) 
+VALUES 
+('Elena', 'Martínez', 'elena.martinez@example.com', 'elena_m', '1234');
+
+
+
+INSERT INTO videos (title, author, author_id, creation_date, duration, views, description, format, url) 
+VALUES 
+('Introducción a Java', 'Ana Poveda',1, '2024-03-01', '00:12:30', 1500, 'Un video explicando los conceptos básicos de Java.', 'mp4', 'https://example.com/java-intro.mp4');
+
+INSERT INTO videos (title, author, author_id, creation_date, duration, views, description, format, url) 
+VALUES 
+('Cómo usar Spring Boot', 'Javier Abella',2, '2023-11-15', '00:25:45', 3200, 'Tutorial completo sobre Spring Boot con ejemplos prácticos.', 'mkv', 'https://example.com/spring-boot-tutorial.mkv');
+
+INSERT INTO videos (title, author, author_id, creation_date, duration, views, description, format, url) 
+VALUES 
+('Patrones de Diseño en Java', 'Elena Martínez',4,'2022-09-10', '00:18:20', 870, 'Explicación de los patrones de diseño más usados en Java.', 'avi', 'https://example.com/design-patterns.avi');

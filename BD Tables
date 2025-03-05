@@ -1,0 +1,23 @@
+create table users(
+    id int not null primary key GENERATED ALWAYS AS IDENTITY
+        (START WITH 1, INCREMENT BY 1),
+    user_name varchar(100) NOT NULL,
+    surname varchar(100) NOT NULL,
+    email varchar(256) NOT NULL UNIQUE,
+    username varchar(100) NOT NULL UNIQUE,
+    password varchar(256) NOT NULL
+);
+
+create table videos(
+    id int NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY
+        (START WITH 1, INCREMENT BY 1),
+    title varchar(100) NOT NULL,
+    author varchar(100) NOT NULL,
+    author_id INT NOT NULL,
+    creation_date date NOT NULL,
+    duration time NOT NULL,
+    views int NOT NULL,
+    description varchar(256) NOT NULL,
+    format varchar(5) NOT NULL,
+    url varchar(256)
+);

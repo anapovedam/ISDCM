@@ -24,6 +24,7 @@
             <% } %>
 
             <form action="servletUsuarios" method="get">
+                <input type="hidden" name="action" value="login">
                 <input type="text" name="username" placeholder="Nombre de Usuario" required>
                 <input type="password" name="password" placeholder="Contraseña" required>
                 <button type="submit">Iniciar Sesión</button>

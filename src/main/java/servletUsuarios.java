@@ -41,6 +41,8 @@ public class servletUsuarios extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
+        System.out.println("Recibida petición POST en servletUsuarios");
+        System.out.println("Acción recibida: " + action);
         if ("register".equals(action)) {
             registerUser(request, response);
         } else if ("login".equals(action)) {
@@ -49,6 +51,7 @@ public class servletUsuarios extends HttpServlet {
     }
 
     private void registerUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("registerUser");
         String name = request.getParameter("name");
         String surname = request.getParameter("surname");
         String email = request.getParameter("email");
@@ -101,7 +104,7 @@ public class servletUsuarios extends HttpServlet {
         
     private void loginUser(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+            System.out.println("login");
             String username = request.getParameter("username");
             String password = request.getParameter("password");
             if (username == null || password == null) {

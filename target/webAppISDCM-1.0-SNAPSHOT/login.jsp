@@ -3,7 +3,6 @@
     Created on : 23 feb 2025, 22:07:40
     Author     : Ana Poveda
 --%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="jakarta.servlet.http.HttpSession" %>
 <!DOCTYPE html>
@@ -11,6 +10,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Iniciar Sesión</title>
+        <link rel="stylesheet" href="css/login.css">
     </head>
     <body>
         <div class="container">
@@ -24,6 +24,7 @@
             <% } %>
 
             <form action="servletUsuarios" method="get">
+                <input type="hidden" name="action" value="login">
                 <input type="text" name="username" placeholder="Nombre de Usuario" required>
                 <input type="password" name="password" placeholder="Contraseña" required>
                 <button type="submit">Iniciar Sesión</button>

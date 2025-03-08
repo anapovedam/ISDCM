@@ -11,6 +11,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Registro de Usuario</title>
+        <link rel="stylesheet" href="css/registroUsu.css">
     </head>
     <body>
         <div class="container">
@@ -24,6 +25,7 @@
         <% } %>
 
             <form action="servletUsuarios" method="post">
+                <input type="hidden" name="action" value="register">
                 <input type="text" name="name" placeholder="Nombre" required>
                 <input type="text" name="surname" placeholder="Apellidos" required>
                 <input type="email" name="email" placeholder="Correo electrónico" required>

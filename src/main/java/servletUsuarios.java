@@ -72,6 +72,13 @@ public class servletUsuarios extends HttpServlet {
         String password = request.getParameter("password");
         String confirmPassword = request.getParameter("confirmPassword");
 
+        // Validación de contraseña
+        if (!isValidPassword(password)) {
+            request.setAttribute("mensaje", "Error: La contraseña debe tener mínimo 8 caracteres, incluir letras, números y símbolos.");
+            request.getRequestDispatcher("registroUsu.jsp").forward(request, response);
+            return;
+        }
+        
         // Validación de los campos del formulario de registro
         if (name == null || surname == null || email == null || username == null || password == null || confirmPassword == null) {
             request.setAttribute("mensaje", "Error: Todos los campos son obligatorios.");
@@ -192,5 +199,11 @@ public class servletUsuarios extends HttpServlet {
             session.invalidate();
         }
         response.sendRedirect("login.jsp");
+    }
+    
+    private boolean isValidPassword(String password) {
+        // Expresión regular: Mínimo 8 caracteres, al menos una letra, un número y un símbolo
+        String passwordPattern = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
+        return password.matches(passwordPattern);
     }
 }

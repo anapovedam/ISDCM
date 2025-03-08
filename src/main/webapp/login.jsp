@@ -22,6 +22,13 @@
                     <%= request.getAttribute("mensaje") %>
                 </p>
             <% } %>
+            
+            <% if (session.getAttribute("error") != null) { %>
+                <p class="error" >
+                    <%= session.getAttribute("error") %>
+                </p>
+                <% session.removeAttribute("error"); %>
+            <% } %>
 
             <form action="servletUsuarios" method="get">
                 <input type="hidden" name="action" value="login">

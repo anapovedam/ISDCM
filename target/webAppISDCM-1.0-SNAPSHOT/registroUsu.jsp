@@ -12,7 +12,41 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Registro de Usuario</title>
         <link rel="stylesheet" href="css/registroUsu.css">
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+             var passwordInput = document.getElementById("password");
+             var confirmPasswordInput = document.getElementById("confirmPassword");
+             var mensajeError = document.getElementById("mensajeError");
+
+             function validarPassword() {
+                 var password = passwordInput.value;
+                 var confirmPassword = confirmPasswordInput.value;
+
+                 var regex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+                 if (!regex.test(password)) {
+                     mensajeError.innerHTML = "⚠ La contraseña debe tener al menos 8 caracteres, una letra, un número y un símbolo.";
+                     mensajeError.style.color = "red";
+                     return false;
+                 }
+
+                 if (password !== confirmPassword) {
+                     mensajeError.innerHTML = "⚠ Las contraseñas no coinciden.";
+                     mensajeError.style.color = "red";
+                     return false;
+                 }
+
+                 mensajeError.innerHTML = "✔ Contraseña válida.";
+                 mensajeError.style.color = "green";
+                 return true;
+             }
+
+             passwordInput.addEventListener("input", validarPassword);
+             confirmPasswordInput.addEventListener("input", validarPassword);
+         });
+        </script>
     </head>
+
     <body>
         <div class="container">
             <h2>Registro de Usuario</h2>
@@ -24,7 +58,7 @@
             </p>
         <% } %>
 
-            <form action="servletUsuarios" method="post">
+            <form action="servletUsuarios" method="post" onsubmit="return validarPassword()">
                 <input type="hidden" name="action" value="register">
                 <input type="text" name="name" placeholder="Nombre" required>
                 <input type="text" name="surname" placeholder="Apellidos" required>
@@ -39,3 +73,6 @@
         </div>
     </body>
 </html>
+
+
+

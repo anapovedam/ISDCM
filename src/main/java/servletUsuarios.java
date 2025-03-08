@@ -41,12 +41,25 @@ public class servletUsuarios extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
-        System.out.println("Recibida petición POST en servletUsuarios");
-        System.out.println("Acción recibida: " + action);
-        if ("register".equals(action)) {
-            registerUser(request, response);
-        } else if ("login".equals(action)) {
-            loginUser(request, response);
+
+        if (action == null) {
+            System.err.println("Error: acción nula");
+            request.setAttribute("mensaje", "Error: Acción no válida.");
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
+        }
+        
+        switch (action) {
+            case "register":
+                registerUser(request, response);
+                break;
+            case "login":
+                loginUser(request, response);
+                break;
+            default:
+                System.err.println("Error: acción desconocida en doPost -> " + action);
+                request.setAttribute("mensaje", "Error: Acción no reconocida.");
+                request.getRequestDispatcher("error.jsp").forward(request, response);
         }
     }
 
@@ -59,9 +72,22 @@ public class servletUsuarios extends HttpServlet {
         String password = request.getParameter("password");
         String confirmPassword = request.getParameter("confirmPassword");
 
+        // Validación de contraseña
+        if (!isValidPassword(password)) {
+            request.setAttribute("mensaje", "Error: La contraseña debe tener mínimo 8 caracteres, incluir letras, números y símbolos.");
+            request.getRequestDispatcher("registroUsu.jsp").forward(request, response);
+            return;
+        }
+        
         // Validación de los campos del formulario de registro
-        if (name == null || surname == null || email == null || username == null || password == null || confirmPassword == null || !password.equals(confirmPassword)) {
-            request.setAttribute("mensaje", "Error: Todos los campos son obligatorios y las contraseñas deben coincidir.");
+        if (name == null || surname == null || email == null || username == null || password == null || confirmPassword == null) {
+            request.setAttribute("mensaje", "Error: Todos los campos son obligatorios.");
+            request.getRequestDispatcher("registroUsu.jsp").forward(request, response);
+            return;
+        }
+        
+        if(!password.equals(confirmPassword)) {
+            request.setAttribute("mensaje", "Error: Las contraseñas deben coincidir.");
             request.getRequestDispatcher("registroUsu.jsp").forward(request, response);
             return;
         }
@@ -89,7 +115,9 @@ public class servletUsuarios extends HttpServlet {
                 stmt.executeUpdate();
                 conn.close();
             } catch (SQLException err) {
-                System.out.println(err.getMessage());
+                System.err.println("Error SQL en registerUser: " + err.getMessage());
+                request.setAttribute("mensaje", "Error al registrar el usuario. Inténtalo más tarde.");
+                request.getRequestDispatcher("error.jsp").forward(request, response);
             }
 
             request.setAttribute("mensaje", "Registro exitoso. Ahora puedes iniciar sesión.");
@@ -121,29 +149,47 @@ public class servletUsuarios extends HttpServlet {
                     stmt.setString(2, password);
                     ResultSet rs = stmt.executeQuery();
                     if (rs.next()) {
-                        //Logeado correctamente
-                        //request.getRequestDispatcher("registroUsu.jsp").forward(request, response);
                         HttpSession session = request.getSession();
                         session.setAttribute("username", username);
-                        response.sendRedirect("login.jsp");
+                        //response.sendRedirect("login.jsp");
+                        //response.sendRedirect("listadoVid.jsp");
                         return;
                     } else {
-                        request.setAttribute("mensaje", "Error: Credenciales incorrectas.");
-                        request.getRequestDispatcher("login.jsp").forward(request, response);
+                        HttpSession session = request.getSession();
+                        session.setAttribute("error", "Error: Credenciales incorrectas.");
+                        //request.getRequestDispatcher("login.jsp").forward(request, response);
+                        response.sendRedirect("login.jsp");
                     }
                 }
-            } catch (Exception e) {
-            //e.printStackTrace();
-            request.setAttribute("mensaje", "Error en la base de datos.");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+            } catch (SQLException err) {
+            System.err.println("Error SQL en loginUser: " + err.getMessage());
+            request.setAttribute("mensaje", "Error al iniciar sesión. Inténtalo más tarde.");
+            request.getRequestDispatcher("error.jsp").forward(request, response);
         }
     }  
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
-        if ("logout".equals(action)) {
-            logoutUsuario(request, response);
+        
+        if (action == null) {
+            System.err.println("Error: acción nula");
+            request.setAttribute("mensaje", "Error: Acción no válida.");
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
+        }
+        
+        switch (action) {
+            case "login":
+                loginUser(request, response);
+                break;
+            case "logout":
+                logoutUsuario(request, response);
+                break;
+            default:
+                System.err.println("Error: acción desconocida-> " + action);
+                request.setAttribute("mensaje", "Error: Acción no reconocida.");
+                request.getRequestDispatcher("error.jsp").forward(request, response);
         }
     }
     
@@ -153,5 +199,11 @@ public class servletUsuarios extends HttpServlet {
             session.invalidate();
         }
         response.sendRedirect("login.jsp");
+    }
+    
+    private boolean isValidPassword(String password) {
+        // Expresión regular: Mínimo 8 caracteres, al menos una letra, un número y un símbolo
+        String passwordPattern = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
+        return password.matches(passwordPattern);
     }
 }

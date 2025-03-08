@@ -1,7 +1,0 @@
-model/Video.class
-servletUsuarios.class
-isdcm/webappisdcm/JakartaRestConfiguration.class
-model/User.class
-isdcm/webappisdcm/resources/JakartaEE91Resource.class
-servletRegistroVid.class
-servletListadoVid.class

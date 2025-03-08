@@ -121,8 +121,7 @@ public class servletUsuarios extends HttpServlet {
                     stmt.setString(2, password);
                     ResultSet rs = stmt.executeQuery();
                     if (rs.next()) {
-                        //Logeado correctamente
-                        //request.getRequestDispatcher("registroUsu.jsp").forward(request, response);
+                        //crear una sesión para el usuario y guarda su nombre de usuario en ella
                         HttpSession session = request.getSession();
                         session.setAttribute("username", username);
                         response.sendRedirect("login.jsp");

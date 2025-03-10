@@ -9,6 +9,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Registrar Nuevo Vídeo</title>
+    <link rel="stylesheet" href="css/registroVid.css">
 </head>
 <body>
     <h2>Registrar un Nuevo Vídeo</h2>

@@ -56,10 +56,10 @@
                             <td><%= vid.getTitle() %></td>
                             <td><%= vid.getAuthor() %></td>
                             <td><%= vid.getCreationDate() %></td>
-                            <td><%= vid.getDuracion() %> min</td>
+                            <td><%= vid.getDuration() %> min</td>
                             <td><%= vid.getViews() %></td>
-                            <td><%= vid.getDescripcion() %></td>
-                            <td><%= vid.getFormato() %></td>
+                            <td><%= vid.getDescription() %></td>
+                            <td><%= vid.getFormat() %></td>
                             <td><a href="<%= vid.getUrl() %>" target="_blank">Ver vídeo</a></td>
 
                         </tr>

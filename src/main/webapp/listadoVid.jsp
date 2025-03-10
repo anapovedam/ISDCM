@@ -23,6 +23,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Listado de Vídeos</title>
+     <link rel="stylesheet" href="css/listadoVid.css">
 </head>
 <body>
     <div class="container">
@@ -61,7 +62,6 @@
                             <td><%= vid.getDescription() %></td>
                             <td><%= vid.getFormat() %></td>
                             <td><a href="<%= vid.getUrl() %>" target="_blank">Ver vídeo</a></td>
-
                         </tr>
                     <% } %>
                 <% } else { %>

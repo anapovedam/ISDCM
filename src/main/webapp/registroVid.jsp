@@ -32,11 +32,11 @@
         <label for="titulo">Título:</label>
         <input type="text" id="titulo" name="titulo" placeholder="Ingrese el título del vídeo" required><br>
 
-        <input type="hidden" id="autor" name="autor" value="<%= sessionUser.getAttribute("usuario") %>">
+        <input type="hidden" id="autor" name="autor" value="<%= sessionUser.getAttribute("username") %>">
 
         <input type="hidden" id="fechaCreacion" name="fechaCreacion" value="<%= new SimpleDateFormat("yyyy-MM-dd").format(new Date()) %>">
 
-        <label for="duracion">Duración (HH:mm:ss):</label>
+        <label for="duracion">Duración (HH:mm):</label>
         <input type="text" id="duracion" name="duracion" placeholder="Ej: 01:30" pattern="^([0-9]{2}):([0-5][0-9])$"required><br>
 
         <label for="descripcion">Descripción:</label>

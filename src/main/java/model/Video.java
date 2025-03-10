@@ -11,6 +11,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Time;
+import java.sql.PreparedStatement;
+
 
 /**
  *
@@ -154,34 +156,32 @@ public class Video {
         this.url = url;
     }
     
-    public Video getVideo(){
-        Video video = null;
-        try {
-            Connection conn = DriverManager.getConnection(DB_HOST, DB_USER, DB_PASSWORD);
-            Statement stmt = conn.createStatement();
-            
-            String sql = "SELECT * FROM " + TABLENAME + " WHERE AUTHORID='" + this.getAuthorID() + "'";
-            System.out.println("Sentencia SQL: " + sql);
-            ResultSet rs = stmt.executeQuery(sql);
-            if (rs.next()) {                
-                int id = rs.getInt("id");
-                int author_id = rs.getInt("author_id");
-                String title = rs.getString("title");
-                String author = rs.getString("author");
-                Date creation_date = rs.getDate("creation_date");
-                Time duration = rs.getTime("duration");
-                int views = rs.getInt("views");
-                String description = rs.getString("description");
-                String format = rs.getString("format");
-                String url = rs.getString("url");
-                                
-                video = new Video(id, title, author_id, author, creation_date, duration, views, description, format, url);
-            }            
-        } catch (SQLException err) {
-            System.out.println(err.getMessage());
+    public Video getVideo() {
+    Video video = null;
+    try (Connection conn = DriverManager.getConnection(DB_HOST, DB_USER, DB_PASSWORD);
+        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM " + TABLENAME + " WHERE id = ?")) {
+        stmt.setInt(1, this.id);
+        ResultSet rs = stmt.executeQuery();
+        if (rs.next()) {                
+            video = new Video(
+                rs.getInt("id"),
+                rs.getString("title"),
+                rs.getInt("author_id"),
+                rs.getString("author"),
+                rs.getDate("creation_date"),
+                rs.getTime("duration"),
+                rs.getInt("views"),
+                rs.getString("description"),
+                rs.getString("format"),
+                rs.getString("url")
+            );
         }
-        return video;
-    }  
+    } catch (SQLException err) {
+        System.out.println("Error en getVideo(): " + err.getMessage());
+    }
+    return video;
+}
+
     
     public boolean createVideo(){
         boolean result = false;

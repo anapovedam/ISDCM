@@ -4,6 +4,16 @@
     Author     : alumne
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="jakarta.servlet.http.HttpSession" %>
+<%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="java.util.Date" %>
+<%
+    HttpSession sessionUser = request.getSession(false);
+    if (sessionUser == null || sessionUser.getAttribute("username") == null) {
+        response.sendRedirect("login.jsp");
+        return;
+    }
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,29 +30,28 @@
 
     <form action="servletRegistroVid" method="post">
         <label for="titulo">Título:</label>
-        <input type="text" id="titulo" name="titulo" required><br>
+        <input type="text" id="titulo" name="titulo" placeholder="Ingrese el título del vídeo" required><br>
 
-        <label for="autor">Autor:</label>
-        <input type="text" id="autor" name="autor" required><br>
+        <input type="hidden" id="autor" name="autor" value="<%= sessionUser.getAttribute("username") %>">
 
-        <label for="fechaCreacion">Fecha de Creación:</label>
-        <input type="date" id="fechaCreacion" name="fechaCreacion" required><br>
+        <input type="hidden" id="fechaCreacion" name="fechaCreacion" value="<%= new SimpleDateFormat("yyyy-MM-dd").format(new Date()) %>">
 
         <label for="duracion">Duración (HH:mm):</label>
-        <input type="text" id="duracion" name="duracion" placeholder="HH:mm" required><br>
+        <input type="text" id="duracion" name="duracion" placeholder="Ej: 01:30" pattern="^([0-9]{2}):([0-5][0-9])$"required><br>
 
         <label for="descripcion">Descripción:</label>
         <textarea id="descripcion" name="descripcion" required></textarea><br>
 
         <label for="formato">Formato:</label>
         <select id="formato" name="formato" required>
+            <option value="" disabled selected>Seleccione un formato</option>
             <option value="MP4">MP4</option>
             <option value="AVI">AVI</option>
             <option value="MKV">MKV</option>
         </select><br>
 
         <label for="url">URL del Vídeo:</label>
-        <input type="text" id="url" name="url" required><br>
+        <input type="text" id="url" name="url" placeholder="Ingrese la URL del vídeo" required><br>
 
         <button type="submit">Registrar Vídeo</button>
     </form>

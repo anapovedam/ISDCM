@@ -154,7 +154,10 @@ public class servletUsuarios extends HttpServlet {
 
                         //response.sendRedirect("login.jsp");
                         
-                        response.sendRedirect("listadoVid.jsp");
+                        //response.sendRedirect("listadoVid.jsp");
+                        response.sendRedirect("servletListadoVid");
+
+
                         //response.sendRedirect("listadoVid.jsp?user=" + username);
 
                         return;

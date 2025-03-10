@@ -152,9 +152,12 @@ public class servletUsuarios extends HttpServlet {
                         HttpSession session = request.getSession();
                         session.setAttribute("username", username);
 
-                        response.sendRedirect("login.jsp");
+                        //response.sendRedirect("login.jsp");
                         
                         //response.sendRedirect("listadoVid.jsp");
+                        response.sendRedirect("servletListadoVid");
+
+
                         //response.sendRedirect("listadoVid.jsp?user=" + username);
 
                         return;

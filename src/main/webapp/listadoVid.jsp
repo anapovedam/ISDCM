@@ -5,6 +5,7 @@
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page import="model.Video" %>
 <%@ page import="jakarta.servlet.http.HttpSession" %>
 
@@ -23,6 +24,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Listado de Vídeos</title>
+     <link rel="stylesheet" href="css/listadoVid.css">
 </head>
 <body>
     <div class="container">
@@ -56,12 +58,11 @@
                             <td><%= vid.getTitle() %></td>
                             <td><%= vid.getAuthor() %></td>
                             <td><%= vid.getCreationDate() %></td>
-                            <td><%= vid.getDuracion() %> min</td>
+                            <td><%= vid.getDuration() %> min</td>
                             <td><%= vid.getViews() %></td>
-                            <td><%= vid.getDescripcion() %></td>
-                            <td><%= vid.getFormato() %></td>
+                            <td><%= vid.getDescription() %></td>
+                            <td><%= vid.getFormat() %></td>
                             <td><a href="<%= vid.getUrl() %>" target="_blank">Ver vídeo</a></td>
-
                         </tr>
                     <% } %>
                 <% } else { %>

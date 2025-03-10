@@ -40,13 +40,13 @@ public class servletUsuarios extends HttpServlet {
     
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String action = request.getParameter("action");
-        if ("register".equals(action)) {
-            registerUser(request, response);
-        } else if ("login".equals(action)) {
-            loginUser(request, response);
-        }
+    String action = request.getParameter("action");
+    if ("register".equals(action)) {
+        registerUser(request, response);
+    } else if ("login".equals(action)) {
+        loginUser(request, response);
     }
+}
 
     private void registerUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String name = request.getParameter("name");
@@ -123,6 +123,11 @@ public class servletUsuarios extends HttpServlet {
                         HttpSession session = request.getSession();
                         session.setAttribute("username", username);
                         response.sendRedirect("login.jsp");
+                        
+                        //response.sendRedirect("listadoVid.jsp");
+                        //response.sendRedirect("listadoVid.jsp?user=" + username);
+
+
                         return;
                     } else {
                         request.setAttribute("mensaje", "Error: Credenciales incorrectas.");

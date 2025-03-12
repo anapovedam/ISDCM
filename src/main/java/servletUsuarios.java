@@ -45,7 +45,7 @@ public class servletUsuarios extends HttpServlet {
         if (action == null) {
             System.err.println("Error: acción nula");
             request.setAttribute("mensaje", "Error: Acción no válida.");
-            request.getRequestDispatcher("error.jsp").forward(request, response);
+            request.getRequestDispatcher("/views/error.jsp").forward(request, response);
             return;
         }
         
@@ -59,7 +59,7 @@ public class servletUsuarios extends HttpServlet {
             default:
                 System.err.println("Error: acción desconocida en doPost -> " + action);
                 request.setAttribute("mensaje", "Error: Acción no reconocida.");
-                request.getRequestDispatcher("error.jsp").forward(request, response);
+                request.getRequestDispatcher("/views/error.jsp").forward(request, response);
         }
     }
 
@@ -75,20 +75,20 @@ public class servletUsuarios extends HttpServlet {
         // Validación de contraseña
         if (!isValidPassword(password)) {
             request.setAttribute("mensaje", "Error: La contraseña debe tener mínimo 8 caracteres, incluir letras, números y símbolos.");
-            request.getRequestDispatcher("registroUsu.jsp").forward(request, response);
+            request.getRequestDispatcher("/views/registroUsu.jsp").forward(request, response);
             return;
         }
         
         // Validación de los campos del formulario de registro
         if (name == null || surname == null || email == null || username == null || password == null || confirmPassword == null) {
             request.setAttribute("mensaje", "Error: Todos los campos son obligatorios.");
-            request.getRequestDispatcher("registroUsu.jsp").forward(request, response);
+            request.getRequestDispatcher("/views/registroUsu.jsp").forward(request, response);
             return;
         }
         
         if(!password.equals(confirmPassword)) {
             request.setAttribute("mensaje", "Error: Las contraseñas deben coincidir.");
-            request.getRequestDispatcher("registroUsu.jsp").forward(request, response);
+            request.getRequestDispatcher("/views/registroUsu.jsp").forward(request, response);
             return;
         }
         
@@ -100,7 +100,7 @@ public class servletUsuarios extends HttpServlet {
                 ResultSet rs = checkStmt.executeQuery();
                 if (rs.next()) {
                     request.setAttribute("mensaje", "Error: El usuario ya existe.");
-                    request.getRequestDispatcher("registroUsu.jsp").forward(request, response);
+                    request.getRequestDispatcher("/views/registroUsu.jsp").forward(request, response);
                     return;
                 }
             }
@@ -117,16 +117,16 @@ public class servletUsuarios extends HttpServlet {
             } catch (SQLException err) {
                 System.err.println("Error SQL en registerUser: " + err.getMessage());
                 request.setAttribute("mensaje", "Error al registrar el usuario. Inténtalo más tarde.");
-                request.getRequestDispatcher("error.jsp").forward(request, response);
+                request.getRequestDispatcher("/views/error.jsp").forward(request, response);
             }
 
             request.setAttribute("mensaje", "Registro exitoso. Ahora puedes iniciar sesión.");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+            request.getRequestDispatcher("/views/login.jsp").forward(request, response);
 
         } catch (Exception e) {
             //e.printStackTrace();
             request.setAttribute("mensaje", "Error en la base de datos.");
-            request.getRequestDispatcher("registroUsu.jsp").forward(request, response);
+            request.getRequestDispatcher("/views/registroUsu.jsp").forward(request, response);
         }
     }
         
@@ -137,7 +137,7 @@ public class servletUsuarios extends HttpServlet {
             String password = request.getParameter("password");
             if (username == null || password == null) {
                 request.setAttribute("mensaje", "Error: Todos los campos son obligatorios.");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
+                request.getRequestDispatcher("/views/login.jsp").forward(request, response);
                 return;
             }
             
@@ -165,13 +165,13 @@ public class servletUsuarios extends HttpServlet {
                         HttpSession session = request.getSession();
                         session.setAttribute("error", "Error: Credenciales incorrectas.");
                         //request.getRequestDispatcher("login.jsp").forward(request, response);
-                        response.sendRedirect("login.jsp");
+                        response.sendRedirect("/views/login.jsp");
                     }
                 }
             } catch (SQLException err) {
             System.err.println("Error SQL en loginUser: " + err.getMessage());
             request.setAttribute("mensaje", "Error al iniciar sesión. Inténtalo más tarde.");
-            request.getRequestDispatcher("error.jsp").forward(request, response);
+            request.getRequestDispatcher("/views/error.jsp").forward(request, response);
         }
     }  
 
@@ -182,7 +182,7 @@ public class servletUsuarios extends HttpServlet {
         if (action == null) {
             System.err.println("Error: acción nula");
             request.setAttribute("mensaje", "Error: Acción no válida.");
-            request.getRequestDispatcher("error.jsp").forward(request, response);
+            request.getRequestDispatcher("/views/error.jsp").forward(request, response);
             return;
         }
         
@@ -196,7 +196,7 @@ public class servletUsuarios extends HttpServlet {
             default:
                 System.err.println("Error: acción desconocida-> " + action);
                 request.setAttribute("mensaje", "Error: Acción no reconocida.");
-                request.getRequestDispatcher("error.jsp").forward(request, response);
+                request.getRequestDispatcher("/views/error.jsp").forward(request, response);
         }
     }
     
@@ -205,7 +205,7 @@ public class servletUsuarios extends HttpServlet {
         if (session != null) {
             session.invalidate();
         }
-        response.sendRedirect("login.jsp");
+        response.sendRedirect("/views/login.jsp");
     }
     
     private boolean isValidPassword(String password) {

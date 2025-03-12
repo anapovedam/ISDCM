@@ -43,7 +43,7 @@ public class servletRegistroVid extends HttpServlet {
         // Validar campos obligatorios
         if (titulo == null || autor == null || fechaCreacion == null || duracion == null || descripcion == null || formato == null || url == null) {
             request.setAttribute("mensaje", "Error: Todos los campos son obligatorios.");
-            request.getRequestDispatcher("registroVid.jsp").forward(request, response);
+            request.getRequestDispatcher("/views/registroVid.jsp").forward(request, response);
             return;
         }
 
@@ -52,7 +52,7 @@ public class servletRegistroVid extends HttpServlet {
             String autorId = getAutorId(conn, autor);
             if (autorId == null) {
                 request.setAttribute("mensaje", "Error: Autor no encontrado en la base de datos.");
-                request.getRequestDispatcher("registroVid.jsp").forward(request, response);
+                request.getRequestDispatcher("/views/registroVid.jsp").forward(request, response);
                 return;
             }
             
@@ -72,7 +72,7 @@ public class servletRegistroVid extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
             request.setAttribute("mensaje", "Error en la base de datos: " + e.getMessage());
-            request.getRequestDispatcher("registroVid.jsp").forward(request, response);
+            request.getRequestDispatcher("/views/registroVid.jsp").forward(request, response);
             return;
         }
 

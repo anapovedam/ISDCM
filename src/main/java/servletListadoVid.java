@@ -22,7 +22,7 @@ public class servletListadoVid extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("username") == null) {
-            response.sendRedirect("login.jsp");
+            response.sendRedirect("/views/login.jsp");
             return;
         }
 
@@ -53,6 +53,6 @@ public class servletListadoVid extends HttpServlet {
         }
 
         request.setAttribute("listaVideos", listaVideos);
-        request.getRequestDispatcher("listadoVid.jsp").forward(request, response);
+        request.getRequestDispatcher("/views/listadoVid.jsp").forward(request, response);
     }
 }

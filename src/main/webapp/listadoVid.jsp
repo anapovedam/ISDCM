@@ -27,7 +27,9 @@
      <link rel="stylesheet" href="css/listadoVid.css">
 </head>
 <body>
-    <div class="container">
+        <!-- Incluir el header -->
+        <jsp:include page="header.jsp" />
+        <div class="container">
         <h2>Listado de Vídeos</h2>
 
         <p>Bienvenido, <%= sessionUser.getAttribute("username") %> | 
@@ -76,6 +78,7 @@
         <br>
         <a href="registroVid.jsp">Subir un nuevo vídeo</a>
     </div>
+            
 </body>
 </html>
 

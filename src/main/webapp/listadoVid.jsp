@@ -27,17 +27,12 @@
      <link rel="stylesheet" href="css/listadoVid.css">
 </head>
 <body>
-    <div class="container">
+        <!-- Incluir el header -->
+        <jsp:include page="header.jsp" />
+        <div class="container">
         <h2>Listado de Vídeos</h2>
 
-        <p>Bienvenido, <%= sessionUser.getAttribute("username") %> | 
-        <a href="servletUsuarios?action=logout">Cerrar sesión</a></p>
-
-        <!-- Botón para actualizar la lista de vídeos -->
-        <form action="servletListadoVid" method="get">
-            
-            <button type="submit">Actualizar Lista</button>
-        </form>
+        <p>Bienvenido, <%= sessionUser.getAttribute("username") %>
 
         <table border="1">
             <thead>
@@ -49,6 +44,7 @@
                     <th>Reproducciones</th>
                     <th>Descripción</th>
                     <th>Formato</th>
+                    <th>Enlace</th>
                 </tr>
             </thead>
             <tbody>
@@ -74,8 +70,8 @@
         </table>
 
         <br>
-        <a href="registroVid.jsp">Subir un nuevo vídeo</a>
     </div>
+            
 </body>
 </html>
 

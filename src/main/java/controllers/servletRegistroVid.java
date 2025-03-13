@@ -1,3 +1,5 @@
+package controllers;
+
 import java.io.IOException;
 import java.sql.*;
 import jakarta.servlet.ServletException;
@@ -6,14 +8,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import DAO.VideoDAO;
+import DAO.UserDAO;
+import model.Video;
+import model.User;
 
 @WebServlet(name = "servletRegistroVid", urlPatterns = {"/servletRegistroVid"})
 public class servletRegistroVid extends HttpServlet {
-
-    private static final String JDBC_URL = "jdbc:derby://localhost:1527/pr2";
-    private static final String JDBC_USER = "pr2";
-    private static final String JDBC_PASSWORD = "pr2";
-    private static final String TABLENAME = "videos";
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -47,57 +48,76 @@ public class servletRegistroVid extends HttpServlet {
             return;
         }
 
-        try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD)) {
-             // Obtener el ID del autor desde la tabla Usuarios
-            String autorId = getAutorId(conn, autor);
+        try {
+            // Crear un VideoDAO
+            VideoDAO videoDAO = new VideoDAO();
+
+            // Obtener el ID del autor desde la base de datos
+            String autorId = getAutorId(autor);  // Cambiado para usar el ID del autor
             if (autorId == null) {
-                request.setAttribute("mensaje", "Error: Autor no encontrado en la base de datos.");
+                request.setAttribute("mensaje", "Error: Autor no encontrado.");
                 request.getRequestDispatcher("registroVid.jsp").forward(request, response);
                 return;
             }
-            
-            String insertSQL = "INSERT INTO " + TABLENAME + " (title, author, author_id, creation_date, duration, views, description, format, url) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            try (PreparedStatement stmt = conn.prepareStatement(insertSQL)) {
-                stmt.setString(1, titulo);
-                stmt.setString(2, autor);
-                stmt.setString(3, autorId);
-                stmt.setDate(4, Date.valueOf(fechaCreacion)); // Convertir a tipo DATE
-                stmt.setTime(5, Time.valueOf(duracion + ":00")); // Convertir a tipo TIME
-                stmt.setInt(6, 0);
-                stmt.setString(7, descripcion);
-                stmt.setString(8, formato);
-                stmt.setString(9, url);
-                stmt.executeUpdate();
+
+            // Crear el objeto Video
+            Video video = new Video(
+                0,  // ID no definido (será autogenerado por la base de datos)
+            titulo,
+            Integer.parseInt(getAutorId(autor)),  // Convertir el autorId de String a Integer
+            getAutorFullName(autor),
+            Date.valueOf(fechaCreacion),  // Convertir la fecha al formato adecuado
+            Time.valueOf(duracion + ":00"),  // Convertir la duración al formato adecuado
+            0,  // Vistas iniciales en 0
+            descripcion,
+            formato,
+            url
+            );
+
+            // Insertar el video en la base de datos usando el DAO
+            boolean success = videoDAO.createVideo(video);
+            if (success) {
+                response.sendRedirect("servletListadoVid"); // Redirige al listado de videos
+            } else {
+                request.setAttribute("mensaje", "Error al registrar el video.");
+                request.getRequestDispatcher("registroVid.jsp").forward(request, response);
             }
-        } catch (SQLException e) {
+
+        } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("mensaje", "Error en la base de datos: " + e.getMessage());
+            request.setAttribute("mensaje", "Error en el servidor: " + e.getMessage());
             request.getRequestDispatcher("registroVid.jsp").forward(request, response);
-            return;
         }
 
-        response.sendRedirect("servletListadoVid"); // Redirige correctamente al listado
     }
-    
     /**
      * Obtiene el ID del autor desde la tabla Usuarios dado su username.
-     * @param conn Conexión activa a la base de datos.
      * @param username Nombre de usuario a buscar.
      * @return ID del usuario si existe, null en caso contrario.
      * @throws SQLException Si ocurre un error en la consulta.
      */
-    private String getAutorId(Connection conn, String username) throws SQLException {
-        String query = "SELECT id FROM Users WHERE username = ?";
-        System.out.println("getAutorId: " + username);
-        try (PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setString(1, username);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getString("id");
-                }
-            }
+    private String getAutorId(String username) {
+    // Crear una instancia de UserDAO
+    UserDAO userDAO = new UserDAO();
+    
+    // Usar el método getUser para obtener el usuario por username
+    User user = userDAO.getUserByUsername(username);
+    
+        if (user != null) {
+            return String.valueOf(user.getId()); // Retornar el ID del usuario
         }
-        return null; // Usuario no encontrado
+
+        return null; // Si el usuario no se encuentra, retornar null
     }
     
+    private String getAutorFullName(String username) {
+    UserDAO userDAO = new UserDAO();
+    User user = userDAO.getUserByUsername(username);
+
+    if (user != null) {
+        return user.getName() + " " + user.getSurname(); // Nombre + Apellido
+    }
+    return null;
 }
+
+}   

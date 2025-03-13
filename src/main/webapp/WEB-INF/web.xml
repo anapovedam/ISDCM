@@ -18,4 +18,12 @@
         <error-code>404</error-code>
         <location>/404.html</location>
     </error-page>
+    
+    <context-param>
+        <param-name>messages</param-name>
+        <param-value>/messages.properties</param-value>
+    </context-param>
+    <listener>
+        <listener-class>PropertiesLoaderListener</listener-class>
+    </listener>
 </web-app>

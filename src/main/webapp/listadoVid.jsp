@@ -3,6 +3,11 @@
     Created on : 23 feb 2025, 22:08:17
     Author     : alumne
 --%>
+<%
+    java.util.Properties messages = (java.util.Properties) application.getAttribute("messages");
+    String tituloPagina = messages.getProperty("titulo.pagina");
+%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
@@ -42,7 +47,7 @@
         <table border="1">
             <thead>
                 <tr>
-                    <th>Título</th>
+                    <th><%= tituloPagina %></th>
                     <th>Autor</th>
                     <th>Fecha</th>
                     <th>Duración</th>

@@ -1,0 +1,19 @@
+/* Hacer que el body ocupe toda la altura de la pantalla */
+body {
+  min-height: 100vh;
+  margin: 0;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+
+/* Asegurar que el contenedor principal ocupe todo el espacio disponible */
+.container {
+    flex: 1; /* Ocupa el espacio restante y empuja el footer hacia abajo */
+    padding: 20px;
+}
+
+/* Footer fijo abajo */
+footer {
+  min-height: 50px;
+  background: PapayaWhip;
+}

@@ -1,3 +1,5 @@
+package controllers;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
@@ -15,6 +17,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.*;
 import model.User;
+import DAO.UserDAO;
 
 /**
  *
@@ -92,42 +95,24 @@ public class servletUsuarios extends HttpServlet {
             return;
         }
         
-        try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD)) {
-            // Verificar si el usuario ya existe
-            String checkUserSQL = "SELECT * FROM " + TABLENAME + " WHERE USERNAME = ?";
-            try (PreparedStatement checkStmt = conn.prepareStatement(checkUserSQL)) {
-                checkStmt.setString(1, username);
-                ResultSet rs = checkStmt.executeQuery();
-                if (rs.next()) {
-                    request.setAttribute("mensaje", "Error: El usuario ya existe.");
-                    request.getRequestDispatcher("registroUsu.jsp").forward(request, response);
-                    return;
-                }
-            }
-            // Insertar el nuevo usuario
-            String insertSQL = "INSERT INTO " + TABLENAME + " (user_name, surname, email, username, password) VALUES (?, ?, ?, ?, ?)";
-            try (PreparedStatement stmt = conn.prepareStatement(insertSQL)) {
-                stmt.setString(1, name);
-                stmt.setString(2, surname);
-                stmt.setString(3, email);
-                stmt.setString(4, username);
-                stmt.setString(5, password);
-                stmt.executeUpdate();
-                conn.close();
-            } catch (SQLException err) {
-                System.err.println("Error SQL en registerUser: " + err.getMessage());
-                request.setAttribute("mensaje", "Error al registrar el usuario. Inténtalo más tarde.");
-                request.getRequestDispatcher("error.jsp").forward(request, response);
-            }
-
+        
+        UserDAO userDAO = new UserDAO();
+        if (userDAO.existsUserOrEmail(username, email)) {
+            request.setAttribute("mensaje", "Error: El usuario o el correo electrónico ya están registrados.");
+            request.getRequestDispatcher("registroUsu.jsp").forward(request, response);
+            return;
+        }
+        
+        
+        User user = new User(name, surname, email, username, password);
+        if (userDAO.createUser(user)) {
             request.setAttribute("mensaje", "Registro exitoso. Ahora puedes iniciar sesión.");
             request.getRequestDispatcher("login.jsp").forward(request, response);
-
-        } catch (Exception e) {
-            //e.printStackTrace();
-            request.setAttribute("mensaje", "Error en la base de datos.");
-            request.getRequestDispatcher("registroUsu.jsp").forward(request, response);
+        } else {
+            request.setAttribute("mensaje", "Error al registrar el usuario. Inténtalo más tarde.");
+            request.getRequestDispatcher("error.jsp").forward(request, response);
         }
+        
     }
         
     private void loginUser(HttpServletRequest request, HttpServletResponse response)
@@ -141,37 +126,18 @@ public class servletUsuarios extends HttpServlet {
                 return;
             }
             
-            try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD)) {
-            // Verificar si el usuario ya existe
-                String checkUserSQL = "SELECT * FROM " + TABLENAME + " WHERE USERNAME = ? AND password = ?";
-                try (PreparedStatement stmt = conn.prepareStatement(checkUserSQL)) {
-                    stmt.setString(1, username);
-                    stmt.setString(2, password);
-                    ResultSet rs = stmt.executeQuery();
-                    if (rs.next()) {
-                        HttpSession session = request.getSession();
-                        session.setAttribute("username", username);
+           UserDAO userDAO = new UserDAO();
+        User user = userDAO.getUser(username, password);
 
-                        //response.sendRedirect("login.jsp");
-                        
-                        //response.sendRedirect("listadoVid.jsp");
-                        response.sendRedirect("servletListadoVid");
+        if (user != null) {
+            HttpSession session = request.getSession();
+            session.setAttribute("username", username);
 
-
-                        //response.sendRedirect("listadoVid.jsp?user=" + username);
-
-                        return;
-                    } else {
-                        HttpSession session = request.getSession();
-                        session.setAttribute("error", "Error: Credenciales incorrectas.");
-                        //request.getRequestDispatcher("login.jsp").forward(request, response);
-                        response.sendRedirect("login.jsp");
-                    }
-                }
-            } catch (SQLException err) {
-            System.err.println("Error SQL en loginUser: " + err.getMessage());
-            request.setAttribute("mensaje", "Error al iniciar sesión. Inténtalo más tarde.");
-            request.getRequestDispatcher("error.jsp").forward(request, response);
+            response.sendRedirect("servletListadoVid");
+        } else {
+            HttpSession session = request.getSession();
+            session.setAttribute("error", "Error: Credenciales incorrectas.");
+            response.sendRedirect("login.jsp");
         }
     }  
 

@@ -28,8 +28,8 @@
 </head>
 <body>
         <!-- Incluir el header -->
-        <jsp:include page="header.jsp" />
-        <div class="container">
+    <jsp:include page="header.jsp" />
+    <div class="container">
         <h2>Listado de Vídeos</h2>
 
         <p>Bienvenido, <%= sessionUser.getAttribute("username") %>
@@ -71,6 +71,7 @@
 
         <br>
     </div>
+    <jsp:include page="footer.jsp" />
             
 </body>
 </html>

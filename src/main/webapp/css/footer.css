@@ -12,8 +12,13 @@ body {
     padding: 20px;
 }
 
-/* Footer fijo abajo */
 footer {
-  min-height: 50px;
-  background: PapayaWhip;
+    background: linear-gradient(90deg, #4A90E2, #904EE2) !important;
+    min-height: 50px;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    text-align: center; /* Centra el texto horizontalmente */
+    padding: 10px 0; /* Añadir algo de padding para evitar cortes */
+    color: white; /* Asegurar contraste con el fondo */
 }

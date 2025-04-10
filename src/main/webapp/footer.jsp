@@ -8,6 +8,6 @@
     <link rel="stylesheet" type="text/css" href="css/footer.css">
 </head>
 <footer>
-    <p>&copy; 2025 Mi Aplicación - Todos los derechos reservados</p>
+    <p>&copy; 2025 ISDCM Primavera - Todos los derechos reservados</p>
 </footer>
 </html>

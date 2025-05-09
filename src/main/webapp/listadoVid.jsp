@@ -58,7 +58,13 @@
                             <td><%= vid.getViews() %></td>
                             <td><%= vid.getDescription() %></td>
                             <td><%= vid.getFormat() %></td>
-                            <td><a href="<%= vid.getUrl() %>" target="_blank">Ver vídeo</a></td>
+                            <td>
+                                <form action="servletReproductorVid" method="get">
+                                    <input type="hidden" name="videoId" value="<%= vid.getId() %>">
+                                    <button type="submit">Ver vídeo</button>
+                                </form>
+                            </td>
+
                         </tr>
                     <% } %>
                 <% } else { %>

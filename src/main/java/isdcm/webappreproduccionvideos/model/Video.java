@@ -136,7 +136,7 @@ public class Video {
         return description;
     }
 
-    public void setDescripcton(String description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 
@@ -215,5 +215,17 @@ public class Video {
         }
         
         return new Video();
+    }
+    
+    public void setVideo(int id, String title, String author, Date date, Time duration, int reproductions, String description, String format, String url){
+        this.setId(id);
+        this.setTitle(title);
+        this.setAuthor(author);
+        this.setCreationDate(date);
+        this.setDuration(duration);
+        this.setViews(reproductions);
+        this.setDescription(description);
+        this.setFormat(format);
+        this.setUrl(url);
     }
 }

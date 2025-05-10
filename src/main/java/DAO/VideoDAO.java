@@ -103,5 +103,41 @@ public class VideoDAO {
         }
         return false;
     }
+    
+    public void incrementViews(int id) {
+    // TODO: Llamar a la API que incrementa las visualizaciones
+    // Por ejemplo:
+    // POST https://api.ejemplo.com/videos/{id}/increment-view
+    }
+    
+        public List<Video> getFilteredVideos(String titulo, String autor, String fecha, int minVistas, int maxVistas) {
+        List<Video> allVideos = getAllVideos(); //fetchVideosFromApi();
+        List<Video> filtered = new ArrayList<>();
+
+        for (Video video : allVideos) {
+            boolean matches = true;
+
+            if (titulo != null && !titulo.isEmpty() && !video.getTitle().toLowerCase().contains(titulo.toLowerCase())) {
+                matches = false;
+            }
+            if (autor != null && !autor.isEmpty() && !video.getAuthor().toLowerCase().contains(autor.toLowerCase())) {
+                matches = false;
+            }
+            if (fecha != null && !fecha.isEmpty() && (video.getCreationDate() == null || !video.getCreationDate().toString().contains(fecha))) {
+                matches = false;
+            }
+            if (video.getViews() < minVistas || video.getViews() > maxVistas) {
+                matches = false;
+            }
+
+            if (matches) {
+                filtered.add(video);
+            }
+        }
+
+        return filtered;
+    }
+        
+
 }
 

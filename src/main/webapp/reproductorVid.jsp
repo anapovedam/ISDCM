@@ -66,7 +66,6 @@
     </style>
 </head>
 <body>
-            <!-- Incluir el header -->
     <jsp:include page="header.jsp" />
     <div class="video-container">
         <div class="video-title"><%= video.getTitle() %></div>
@@ -77,6 +76,13 @@
             Tu navegador no soporta reproducción de vídeo HTML5.
         </video>
             
+        <div class="video-info">
+            <p><strong>Autor:</strong> <%= video.getAuthor() %></p>
+            <p><strong>Fecha de creación:</strong> <%= video.getCreationDate() %></p>
+            <p><strong>Duración:</strong> <%= video.getDuration() %> min</p>
+            <p><strong>Reproducciones:</strong> <%= video.getViews() %></p>
+            <p><strong>Formato:</strong> <%= video.getFormat() %></p>
+        </div>
 
         <div class="description-box">
             <p><strong>Descripción:</strong> <%= video.getDescription() %></p>

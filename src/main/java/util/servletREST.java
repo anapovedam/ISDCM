@@ -325,4 +325,27 @@ public class servletREST {
             return false;
         }
     }
+
+    public void incrementViews(int videoId) throws IOException, InterruptedException {
+        if (videoId <= 0) {
+            throw new IllegalArgumentException("El ID del video debe ser un valor positivo.");
+        }
+
+        JSONObject jsonInput = new JSONObject();
+        jsonInput.put("videoId", videoId); 
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(API_BASE_URL + "/incrementViews"))
+                .POST(HttpRequest.BodyPublishers.ofString(jsonInput.toString())) 
+                .header("Content-Type", "application/json")
+                .build();
+
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+        if (response.statusCode() != 200) {
+            throw new IOException("Falló el incremento de vistas para el video con ID " + videoId +
+                    ". Código de estado: " + response.statusCode() +
+                    ", Respuesta del servidor: " + response.body());
+        }
+    }
 }

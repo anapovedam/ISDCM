@@ -5,7 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
 import model.Video;
-import DAO.VideoDAO;
+import util.servletREST; // Importa servletREST
 
 @WebServlet(name = "servletReproductorVid", urlPatterns = {"/servletReproductorVid"})
 public class servletReproductorVid extends HttpServlet {
@@ -20,7 +20,6 @@ public class servletReproductorVid extends HttpServlet {
             return;
         }
 
-        // Obtener el ID del vídeo desde los parámetros
         String videoIdParam = request.getParameter("videoId");
         if (videoIdParam == null) {
             response.sendRedirect("listadoVid.jsp");
@@ -35,19 +34,23 @@ public class servletReproductorVid extends HttpServlet {
             return;
         }
 
-        VideoDAO dao = new VideoDAO();
+        servletREST rest = new servletREST(); // Crea instancia de servletREST
 
-        // ✅ Incrementar visualizaciones
-        dao.incrementViews(videoId);
+        try {
+            rest.incrementViews(videoId);
 
-        // 🔄 Obtener el vídeo actualizado
-        Video video = dao.getVideo(videoId);
+            Video video = rest.getVideoById(videoId);
 
-        if (video != null) {
-            request.setAttribute("video", video);
-            request.getRequestDispatcher("reproductorVid.jsp").forward(request, response);
-        } else {
-            response.sendRedirect("listadoVid.jsp");
+            if (video != null) {
+                request.setAttribute("video", video);
+                request.getRequestDispatcher("reproductorVid.jsp").forward(request, response);
+            } else {
+                response.sendRedirect("listadoVid.jsp");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("error", "Error al obtener el video: " + e.getMessage());
+            request.getRequestDispatcher("listadoVid.jsp").forward(request, response);
         }
     }
 }

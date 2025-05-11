@@ -6,18 +6,19 @@ package controllers;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
  * @author alumne
  */
-@WebServlet(name = "servletReproductorVid", urlPatterns = {"/servletReproductorVid"})
-public class servletReproductorVid extends HttpServlet {
+@WebServlet(name = "serveletBúsquedaVid", urlPatterns = {"/serveletB_squedaVid"})
+public class servletBúsquedaVid extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,10 +37,10 @@ public class servletReproductorVid extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet servletReproductorVid</title>");            
+            out.println("<title>Servlet serveletBúsquedaVid</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet servletReproductorVid at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet serveletBúsquedaVid at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }

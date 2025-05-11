@@ -2,12 +2,13 @@
 .container {
     position: relative;
     background: white;
-    padding: 20px;
+    padding: 20px 30px;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    width: 90%;
-    max-width: 400px;
-    text-align: center;
+    width: 100%;
+    max-width: 500px;
+    box-sizing: border-box;
+    text-align: left;
 }
 
 /* Posición del enlace en la parte superior derecha */

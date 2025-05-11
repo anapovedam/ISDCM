@@ -23,27 +23,5 @@ public class servletListadoVid extends HttpServlet {
             return;
         }
 
-        // Obtener los parámetros del formulario de filtros
-        String titulo = request.getParameter("titulo");
-        String autor = request.getParameter("autor");
-        String fecha = request.getParameter("fecha");
-        String minVistasStr = request.getParameter("minVistas");
-        String maxVistasStr = request.getParameter("maxVistas");
-
-        // Convertir los parámetros de vistas a números si es posible
-        int minVistas = minVistasStr != null && !minVistasStr.isEmpty() ? Integer.parseInt(minVistasStr) : 0;
-        int maxVistas = maxVistasStr != null && !maxVistasStr.isEmpty() ? Integer.parseInt(maxVistasStr) : Integer.MAX_VALUE;
-
-        // Crear un objeto VideoDAO para manejar la base de datos
-        VideoDAO videoDAO = new VideoDAO();
-
-        // Filtrar los vídeos según los parámetros recibidos
-        List<Video> listaVideos = videoDAO.getFilteredVideos(titulo, autor, fecha, minVistas, maxVistas);
-
-        // Enviar la lista de vídeos filtrados a la vista
-        request.setAttribute("listaVideos", listaVideos);
-
-        // Redirigir a la vista correspondiente
-        request.getRequestDispatcher("listadoVid.jsp").forward(request, response);
     }
 }

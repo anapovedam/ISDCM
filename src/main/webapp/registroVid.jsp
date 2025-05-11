@@ -18,6 +18,8 @@
     <link rel="stylesheet" href="css/registroVid.css">
 </head>
 <body>
+    <jsp:include page="header.jsp" />
+
     <div class="container">
         
 

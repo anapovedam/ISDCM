@@ -26,8 +26,12 @@ import java.time.Duration; // Using java.time.Duration for HttpClient timeout
  */
 public class servletREST {
 
-    // !!! IMPORTANT: Replace with your actual API base URL !!!
-    private static final String API_BASE_URL = "YOUR_API_BASE_URL/videos"; // Example: "http://localhost:8080/api/videos"
+    private static final String API_BASE_URL = "http://localhost:20421/ISDCM-21_REST_Service_v2/resources"; // Example: "http://localhost:8080/api/videos"
+
+    private static final String VIDEOS_PATH = "/videos";
+    private static final String INCR_VIEWS_PATH = "/views"; // Path para incrementar vistas
+    private static final String FILTERED_PATH = "/filtered"; // Path para videos filtrados
+
 
     private final HttpClient httpClient;
     private final SimpleDateFormat sqlDateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -142,7 +146,7 @@ public class servletREST {
      */
     public List<Video> getAllVideos() throws IOException, InterruptedException, JSONException {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(API_BASE_URL))
+                .uri(URI.create(API_BASE_URL + VIDEOS_PATH))
                 .header("Accept", "application/json")
                 .GET()
                 .build();
@@ -183,7 +187,7 @@ public class servletREST {
             }
         }
 
-        String apiUrl = API_BASE_URL + "/filter" + (queryParams.length() > 1 ? queryParams.toString() : ""); 
+        String apiUrl = API_BASE_URL + VIDEOS_PATH + FILTERED_PATH + (queryParams.length() > 1 ? queryParams.toString() : "");
 
 
         HttpRequest request = HttpRequest.newBuilder()
@@ -217,7 +221,7 @@ public class servletREST {
      */
     public Video getVideoById(int videoId) throws IOException, InterruptedException, JSONException {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(API_BASE_URL + "/" + videoId))
+                .uri(URI.create(API_BASE_URL + VIDEOS_PATH + "/" + videoId))
                 .header("Accept", "application/json")
                 .GET()
                 .build();
@@ -248,7 +252,7 @@ public class servletREST {
         JSONObject jsonVideo = videoToJson(video);
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(API_BASE_URL))
+                .uri(URI.create(API_BASE_URL + VIDEOS_PATH))
                 .header("Content-Type", "application/json")
                 .header("Accept", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(jsonVideo.toString()))
@@ -263,36 +267,6 @@ public class servletREST {
         }
     }
 
-    /**
-     * Updates an existing video via the API.
-     *
-     * @param video The Video object to update. It must have a valid ID.
-     * @return The updated Video object.
-     * @throws IOException If an I/O error occurs.
-     * @throws InterruptedException If the request is interrupted.
-     * @throws JSONException If JSON processing fails.
-     */
-    public Video updateVideo(Video video) throws IOException, InterruptedException, JSONException {
-        if (video.getId() <= 0) {
-            throw new IllegalArgumentException("Video ID must be valid for update.");
-        }
-        JSONObject jsonVideo = videoToJson(video);
-
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(API_BASE_URL + "/" + video.getId())) // Standard REST practice: PUT to /resource/{id}
-                .header("Content-Type", "application/json")
-                .header("Accept", "application/json")
-                .PUT(HttpRequest.BodyPublishers.ofString(jsonVideo.toString()))
-                .build();
-
-        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
-        if (response.statusCode() == 200) { // HTTP 200 OK
-            return jsonToVideo(new JSONObject(response.body()));
-        } else {
-            throw new IOException("Failed to update video " + video.getId() + ": HTTP status code " + response.statusCode() + " - " + response.body());
-        }
-    }
 
     /**
      * Deletes a video via the API.
@@ -308,7 +282,7 @@ public class servletREST {
         }
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(API_BASE_URL + "/" + videoId))
+                .uri(URI.create(API_BASE_URL + VIDEOS_PATH + "/" + videoId))
                 .DELETE()
                 .build();
 
@@ -335,7 +309,7 @@ public class servletREST {
         jsonInput.put("videoId", videoId); 
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(API_BASE_URL + "/incrementViews"))
+                .uri(URI.create(API_BASE_URL + VIDEOS_PATH + "/" + videoId + INCR_VIEWS_PATH))
                 .POST(HttpRequest.BodyPublishers.ofString(jsonInput.toString())) 
                 .header("Content-Type", "application/json")
                 .build();

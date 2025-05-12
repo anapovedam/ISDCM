@@ -75,7 +75,6 @@
                 <% } %>
             </tbody>
         </table>
-
         <br>
     </div>
     <jsp:include page="footer.jsp" />

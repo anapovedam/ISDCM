@@ -24,12 +24,6 @@
             <input type="date" name="fecha" title="Fecha de creación" 
                    style="padding: 6px 10px; font-size: 14px; border-radius: 6px; border: 1px solid #ccc;" />
 
-            <input type="number" name="minVistas" placeholder="Min. vistas" min="0" 
-                   style="padding: 6px 10px; font-size: 14px; border-radius: 6px; border: 1px solid #ccc;" />
-
-            <input type="number" name="maxVistas" placeholder="Max. vistas" min="0" 
-                   style="padding: 6px 10px; font-size: 14px; border-radius: 6px; border: 1px solid #ccc;" />
-
             <input type="submit" value="Filtrar"
                    style="padding: 6px 10px; font-size: 14px; border-radius: 6px; background-color: #2b78e4; color: white; border: none; cursor: pointer;" />
 

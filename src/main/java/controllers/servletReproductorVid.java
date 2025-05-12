@@ -22,7 +22,7 @@ public class servletReproductorVid extends HttpServlet {
 
         String videoIdParam = request.getParameter("videoId");
         if (videoIdParam == null) {
-            response.sendRedirect("listadoVid.jsp");
+            response.sendRedirect("servletListadoVid"); // Redirect to the servlet, not the JSP
             return;
         }
 
@@ -30,14 +30,14 @@ public class servletReproductorVid extends HttpServlet {
         try {
             videoId = Integer.parseInt(videoIdParam);
         } catch (NumberFormatException e) {
-            response.sendRedirect("listadoVid.jsp");
+            response.sendRedirect("servletListadoVid");  // Redirect to the servlet, not the JSP.  The servlet will handle the logic
             return;
         }
 
-        servletREST rest = new servletREST(); // Crea instancia de servletREST
+        servletREST rest = new servletREST();
 
         try {
-            rest.incrementViews(videoId);
+            rest.incrementViews(videoId); //increment views
 
             Video video = rest.getVideoById(videoId);
 
@@ -45,7 +45,7 @@ public class servletReproductorVid extends HttpServlet {
                 request.setAttribute("video", video);
                 request.getRequestDispatcher("reproductorVid.jsp").forward(request, response);
             } else {
-                response.sendRedirect("listadoVid.jsp");
+                response.sendRedirect("servletListadoVid"); // Redirect to the servlet, which will re-fetch the video list.
             }
         } catch (Exception e) {
             e.printStackTrace();

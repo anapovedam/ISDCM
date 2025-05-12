@@ -30,8 +30,6 @@ public class servletBusqueda extends HttpServlet {
         String titulo = request.getParameter("titulo");
         String autor = request.getParameter("autor");
         String fecha = request.getParameter("fecha");
-        String minVistasStr = request.getParameter("minVistas");
-        String maxVistasStr = request.getParameter("maxVistas");
 
         Map<String, String> filtros = new HashMap<>();
         if (titulo != null && !titulo.isEmpty()) {
@@ -43,12 +41,7 @@ public class servletBusqueda extends HttpServlet {
         if (fecha != null && !fecha.isEmpty()) {
             filtros.put("fecha", fecha);
         }
-        if (minVistasStr != null && !minVistasStr.isEmpty()) {
-            filtros.put("minVistas", minVistasStr);
-        }
-        if (maxVistasStr != null && !maxVistasStr.isEmpty()) {
-            filtros.put("maxVistas", maxVistasStr);
-        }
+
 
         servletREST rest = new servletREST();
         List<Video> listaVideos = null;

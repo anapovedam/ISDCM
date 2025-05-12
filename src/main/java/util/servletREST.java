@@ -187,8 +187,12 @@ public class servletREST {
             }
         }
 
-        String apiUrl = API_BASE_URL + VIDEOS_PATH + FILTERED_PATH + (queryParams.length() > 1 ? queryParams.toString() : "");
-
+        String apiUrl = String.format("%s%s%s%s",
+            API_BASE_URL,
+            VIDEOS_PATH,
+            FILTERED_PATH,
+            queryParams.length() > 1 ? queryParams.toString() : ""
+        );
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(apiUrl))

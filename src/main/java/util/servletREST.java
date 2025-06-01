@@ -26,7 +26,7 @@ import java.time.Duration; // Using java.time.Duration for HttpClient timeout
  */
 public class servletREST {
 
-    private static final String API_BASE_URL = "http://localhost:20421/ISDCM-21_REST_Service_v2/resources"; // Example: "http://localhost:8080/api/videos"
+    private static final String API_BASE_URL = "http://localhost:30794/ISDCM-21_REST_Service_v2/"; // Example: "http://localhost:8080/api/videos"
 
     private static final String VIDEOS_PATH = "/videos";
     private static final String INCR_VIEWS_PATH = "/views"; // Path para incrementar vistas

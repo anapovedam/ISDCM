@@ -14,7 +14,7 @@
     <body>
 
         <h3 style="margin-bottom: 10px;">Filtrar vídeos</h3>
-        <form action="servletListadoVid" method="get" style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: center; margin-bottom: 20px;">
+        <form action="servletBusqueda" method="get" style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: center; margin-bottom: 20px;">
             <input type="text" name="titulo" placeholder="Título" 
                    style="padding: 6px 10px; font-size: 14px; border-radius: 6px; border: 1px solid #ccc;" />
 

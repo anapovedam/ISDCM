@@ -18,7 +18,6 @@ public class servletBusqueda extends HttpServlet {
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
-     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -27,21 +26,32 @@ public class servletBusqueda extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        // Add character encoding
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        
         String titulo = request.getParameter("titulo");
         String autor = request.getParameter("autor");
         String fecha = request.getParameter("fecha");
 
+        // Add debug logging
+        System.out.println("DEBUG - titulo: '" + titulo + "'");
+        System.out.println("DEBUG - autor: '" + autor + "'");
+        System.out.println("DEBUG - fecha: '" + fecha + "'");
+
         Map<String, String> filtros = new HashMap<>();
-        if (titulo != null && !titulo.isEmpty()) {
-            filtros.put("titulo", titulo);
+        if (titulo != null && !titulo.trim().isEmpty()) {
+            filtros.put("title", titulo.trim());
         }
-        if (autor != null && !autor.isEmpty()) {
-            filtros.put("autor", autor);
+        if (autor != null && !autor.trim().isEmpty()) {
+            filtros.put("author", autor.trim());
         }
-        if (fecha != null && !fecha.isEmpty()) {
-            filtros.put("fecha", fecha);
+        if (fecha != null && !fecha.trim().isEmpty()) {
+            filtros.put("datecreated", fecha.trim());
         }
 
+        // Debug the filters map
+        System.out.println("DEBUG - filtros: " + filtros);
 
         servletREST rest = new servletREST();
         List<Video> listaVideos = null;

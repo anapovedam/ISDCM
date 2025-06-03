@@ -26,18 +26,15 @@ import java.time.Duration; // Using java.time.Duration for HttpClient timeout
  */
 public class servletREST {
 
-    private static final String API_BASE_URL = "http://localhost:8080/ISDCM-21_REST_Service_v2/"; // Example: "http://localhost:8080/api/videos"
+    private static final String API_BASE_URL = "http://localhost:8080/ISDCM-21_REST_Service_v2/res";
 
     private static final String VIDEOS_PATH = "/videos";
     private static final String INCR_VIEWS_PATH = "/views"; // Path para incrementar vistas
     private static final String FILTERED_PATH = "/filtered"; // Path para videos filtrados
 
-
     private final HttpClient httpClient;
     private final SimpleDateFormat sqlDateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private final SimpleDateFormat sqlTimeFormat = new SimpleDateFormat("HH:mm:ss");
-
-
     /**
      * Constructor to initialize the HttpClient.
      */
@@ -135,10 +132,8 @@ public class servletREST {
         return video;
     }
 
-
     /**
      * Fetches all videos from the API.
-     *
      * @return A list of Video objects.
      * @throws IOException If an I/O error occurs during the HTTP request.
      * @throws InterruptedException If the HTTP request is interrupted.

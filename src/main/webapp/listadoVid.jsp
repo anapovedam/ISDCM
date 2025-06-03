@@ -65,7 +65,6 @@
                                     <button type="submit">Ver vídeo</button>
                                 </form>
                             </td>
-
                         </tr>
                     <% } %>
                 <% } else { %>

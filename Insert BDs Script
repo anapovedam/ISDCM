@@ -18,7 +18,7 @@ VALUES
 
 INSERT INTO videos (title, author, author_id, creation_date, duration, views, description, format, url) 
 VALUES 
-('Introducción a Java', 'Ana Poveda',1, '2024-03-01', '00:12:30', 1500, 'Un video explicando los conceptos básicos de Java.', 'mp4', 'https://example.com/java-intro.mp4');
+('TUtorial', 'Ana Poveda',1, '2024-03-01', '00:12:30', 1500, 'Un video explicando los conceptos básicos de Java.', 'mp4', '/ISDCM/videos/videoplayback.mp4');
 
 INSERT INTO videos (title, author, author_id, creation_date, duration, views, description, format, url) 
 VALUES 

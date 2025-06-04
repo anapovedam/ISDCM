@@ -32,7 +32,7 @@ import java.time.Duration;
  */
 public class servletREST {
 
-    private static final String API_BASE_URL = "http://localhost:8080/ISDCM-21_REST_Service_v2/res";
+    private static final String API_BASE_URL = "http://localhost:30794/ISDCM-21_REST_Service_v2/res";
 
     private static final String VIDEOS_PATH = "/videos";
     private static final String INCR_VIEWS_PATH = "/views"; // Path para incrementar vistas

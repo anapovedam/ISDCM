@@ -28,6 +28,12 @@
             <artifactId>json</artifactId>
             <version>20231013</version> 
         </dependency>
+        <dependency> 
+            <groupId>org.apache.santuario</groupId> 
+            <artifactId>xmlsec</artifactId> 
+            <version>1.5.8</version> 
+            <type>jar</type> 
+        </dependency>
     </dependencies>
     
     

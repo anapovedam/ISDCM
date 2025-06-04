@@ -40,7 +40,7 @@ public class servletReproductorVid extends HttpServlet {
             rest.incrementViews(videoId); //increment views
 
             Video video = rest.getVideoById(videoId);
-
+            System.out.println("Video vale " + video);
             if (video != null) {
                 request.setAttribute("video", video);
                 request.getRequestDispatcher("reproductorVid.jsp").forward(request, response);

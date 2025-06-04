@@ -309,7 +309,7 @@ public class servletREST {
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(API_BASE_URL + VIDEOS_PATH + "/" + videoId + INCR_VIEWS_PATH))
-                .POST(HttpRequest.BodyPublishers.ofString(jsonInput.toString())) 
+                .PUT(HttpRequest.BodyPublishers.ofString(jsonInput.toString())) 
                 .header("Content-Type", "application/json")
                 .build();
 

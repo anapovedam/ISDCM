@@ -13,6 +13,8 @@ import java.io.File;
 import java.io.IOException;
 
 import util.CryptoUtils;
+import util.SecretKeyUtil;
+import javax.crypto.SecretKey;
 /**
  *
  * @author alumne
@@ -20,8 +22,8 @@ import util.CryptoUtils;
 @WebServlet("/CryptoServlet")
 public class servletCrypto extends HttpServlet {
 
-    private final String basePath = "/ruta/a/tus/videos/"; // Cambiar por ruta real en el servidor
-    private final String encryptionKey = "REEMPLAZAR_POR_CLAVE_BASE64"; // Reemplazar por clave real segura
+    private final String basePath = "/home/alumne/NetBeansProjects/webAppISDCM/xmlcypher";
+    //private final String encryptionKey = "CLAVE_BASE64";
     
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -37,6 +39,8 @@ public class servletCrypto extends HttpServlet {
         File outputFile;
 
         try {
+            SecretKey secretKey = SecretKeyUtil.getSecretKey("AES");
+            String encryptionKey = SecretKeyUtil.keyToString(secretKey);
             if ("encrypt".equals(action)) {
                 outputFile = new File(basePath + "encrypted_" + filename);
                 CryptoUtils.encryptFile(inputFile, outputFile, encryptionKey);

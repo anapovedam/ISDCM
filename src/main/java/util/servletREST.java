@@ -45,6 +45,39 @@ public class servletREST {
                 .build();
     }
 
+    private HttpRequest.Builder authorizedRequestBuilder(String jwtToken) {
+        return HttpRequest.newBuilder()
+                .header("Authorization", "Bearer " + jwtToken)
+                .header("Accept", "application/json");
+    }
+    
+    public String login(String username, String password) throws IOException, InterruptedException {
+        // Build form body: username=<…>&password=<…>
+        String formData = "username=" + URLEncoder.encode(username, StandardCharsets.UTF_8)
+                        + "&password=" + URLEncoder.encode(password, StandardCharsets.UTF_8);
+
+        HttpRequest req = HttpRequest.newBuilder()
+                .uri(URI.create(API_BASE_URL + "/videos/login"))
+                .header("Content-Type", "application/x-www-form-urlencoded")
+                .POST(HttpRequest.BodyPublishers.ofString(formData))
+                .build();
+
+        HttpResponse<String> resp = httpClient.send(req, HttpResponse.BodyHandlers.ofString());
+        int status = resp.statusCode();
+        if (status == 200) {
+            try {
+                JSONObject json = new JSONObject(resp.body());
+                return json.getString("token");
+            } catch (JSONException ex) {
+                // Malformed JSON response
+                return null;
+            }
+        } else {
+            // 401 Unauthorized or other → login failed
+            System.out.println("El status del login es " + status);
+            return null;
+        }
+    }
     /**
      * Converts a Video object to its JSON string representation.
      *

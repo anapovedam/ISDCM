@@ -19,6 +19,23 @@ import java.sql.*;
 import model.User;
 import DAO.UserDAO;
 
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.io.IOException;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.*;
+import java.net.URI;
+import java.net.URLEncoder;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
+
+import org.json.JSONObject;  // you already have org.json on classpath
+import org.json.JSONException;
+
 /**
  *
  * @author Ana Poveda
@@ -126,18 +143,43 @@ public class servletUsuarios extends HttpServlet {
                 return;
             }
             
-           UserDAO userDAO = new UserDAO();
-        User user = userDAO.getUser(username, password);
+        String formData = "username=" + URLEncoder.encode(username, StandardCharsets.UTF_8)
+                        + "&password=" + URLEncoder.encode(password, StandardCharsets.UTF_8);
 
-        if (user != null) {
-            HttpSession session = request.getSession();
-            session.setAttribute("username", username);
+        HttpClient client = HttpClient.newBuilder()
+                .version(HttpClient.Version.HTTP_2)
+                .build();
 
-            response.sendRedirect("servletListadoVid");
-        } else {
-            HttpSession session = request.getSession();
-            session.setAttribute("error", "Error: Credenciales incorrectas.");
-            response.sendRedirect("login.jsp");
+        HttpRequest httpRequest = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/ISDCM-21_REST_Service_v2/res/videos/login"))
+                .header("Content-Type", "application/x-www-form-urlencoded")
+                .POST(HttpRequest.BodyPublishers.ofString(formData))
+                .build();
+         try {
+            HttpResponse<String> httpResponse = client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+
+            if (httpResponse.statusCode() == 200) {
+                // Backend returned { "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6..." }
+                JSONObject jsonResponse = new JSONObject(httpResponse.body());
+                String jwt = jsonResponse.getString("token");
+
+                // Store JWT (and maybe username) in session
+                HttpSession session = request.getSession(true);
+                session.setAttribute("jwtToken", jwt);
+                session.setAttribute("username", username);
+
+                // Redirect to the page that lists videos (or your home)
+                response.sendRedirect("servletListadoVid");  
+            } else {
+                // 401 or other → credentials invalid
+                HttpSession session = request.getSession(true);
+                session.setAttribute("error", "Error: Credenciales incorrectas.");
+                response.sendRedirect("login.jsp");
+            }
+        } catch (InterruptedException | JSONException e) {
+            e.printStackTrace();
+            request.setAttribute("mensaje", "Error durante la autenticación: " + e.getMessage());
+            request.getRequestDispatcher("error.jsp").forward(request, response);
         }
     }  
 

@@ -70,11 +70,17 @@
     <div class="video-container">
         <div class="video-title"><%= video.getTitle() %></div>
 
-        <video id="videoPlayer" class="video-js vjs-default-skin" controls preload="auto"
-               data-setup="{}">
+        <video
+            id="videoPlayer"
+            class="video-js vjs-default-skin vjs-fluid"
+            controls
+            preload="auto"
+            data-setup="{}"
+        >
             <source src="<%= video.getUrl() %>" type="video/<%= video.getFormat() %>">
             Tu navegador no soporta reproducción de vídeo HTML5.
         </video>
+
             
         <div class="video-info">
             <p><strong>Autor:</strong> <%= video.getAuthor() %></p>

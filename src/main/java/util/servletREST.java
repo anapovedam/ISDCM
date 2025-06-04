@@ -19,7 +19,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.time.Duration; // Using java.time.Duration for HttpClient timeout
-
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.time.Duration;
 /**
  * ServletREST class to interact with an external Video REST API.
  * This class handles HTTP requests to perform CRUD operations on videos.
@@ -35,6 +41,9 @@ public class servletREST {
     private final HttpClient httpClient;
     private final SimpleDateFormat sqlDateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private final SimpleDateFormat sqlTimeFormat = new SimpleDateFormat("HH:mm:ss");
+    
+    private final DateTimeFormatter isoDateTimeFormatter = DateTimeFormatter.ISO_ZONED_DATE_TIME;
+    private final DateTimeFormatter isoDateFormatter = DateTimeFormatter.ISO_LOCAL_DATE;
     /**
      * Constructor to initialize the HttpClient.
      */
@@ -130,10 +139,10 @@ public class servletREST {
             String creationDateStr = jsonVideo.optString("creation_date");
             if (creationDateStr != null && !creationDateStr.isEmpty() && !creationDateStr.equals("null")) {
                 try {
-                    java.util.Date parsedDate = sqlDateFormat.parse(creationDateStr);
-                    video.setCreationDate(new Date(parsedDate.getTime()));
-                } catch (java.text.ParseException e) {
-                    System.err.println("Error parsing creation_date: " + e.getMessage());
+                    Date parsedDate = parseDate(creationDateStr);
+                    video.setCreationDate(parsedDate);
+                } catch (Exception e) {
+                    System.err.println("Error parsing creation_date '" + creationDateStr + "': " + e.getMessage());
                     video.setCreationDate(null);
                 }
             } else {
@@ -164,7 +173,24 @@ public class servletREST {
         }
         return video;
     }
-
+    private Date parseDate(String dateStr) throws Exception {
+            if (dateStr.endsWith("Z") || dateStr.contains("T")) {
+                // Handle ISO format with timezone (e.g., "2023-12-01T10:30:00Z")
+                try {
+                    ZonedDateTime zonedDateTime = ZonedDateTime.parse(dateStr, isoDateTimeFormatter);
+                    return new Date(zonedDateTime.toInstant().toEpochMilli());
+                } catch (DateTimeParseException e) {
+                    // Try parsing as just date with Z suffix (e.g., "2023-12-01Z")
+                    String cleanDateStr = dateStr.replace("Z", "").replace("T00:00:00", "");
+                    java.time.LocalDate localDate = java.time.LocalDate.parse(cleanDateStr, isoDateFormatter);
+                    return Date.valueOf(localDate);
+                }
+            } else {
+                // Handle simple date format (e.g., "2023-12-01")
+                java.util.Date parsedDate = sqlDateFormat.parse(dateStr);
+                return new Date(parsedDate.getTime());
+            }
+        }
     /**
      * Fetches all videos from the API.
      * @return A list of Video objects.
